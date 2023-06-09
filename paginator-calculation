@@ -1,0 +1,53 @@
+export const defineNeededElements = (activePage: number, pagesNumber: number): string[] => {
+    const numbers: string[] = []
+    const result: string[] = []
+
+    // Init all numbers array
+    for (let i = 1; i <= pagesNumber; i++) {
+        numbers.push(`${i}`)
+    }
+
+    // Special case when all numbers are shown
+    if (pagesNumber <= 7) {
+        return numbers
+    }
+
+    // Make left part of paginator
+    if (activePage <= 4) {
+        result.push(`${1}`, `${2}`, `${3}`, `${4}`)
+    } else {
+        result.push(`${1}`, '...')
+    }
+
+    // Make middle part of paginator
+    if (activePage > 4 && !(pagesNumber - activePage <= 4)) {
+        result.push(`${activePage - 1}`, `${activePage}`)
+    }
+
+    // Make right part of paginator
+    if (activePage < pagesNumber - 4 && !(pagesNumber - activePage <= 4)) {
+        if (activePage >= 4) {
+            result.push(`${activePage + 1}`)
+        }
+
+        result.push('...', `${pagesNumber}`)
+    }
+
+    if (pagesNumber - activePage <= 4) {
+        if (activePage === 4) {
+            for (let i = numbers.length - 4; i < numbers.length; i++) {
+                result.push(numbers[i])
+            }
+        } else {
+            if (activePage === pagesNumber - 4) {
+                result.push(`${activePage - 1}`)
+            }
+
+            for (let i = numbers.length - 5; i < numbers.length; i++) {
+                result.push(numbers[i])
+            }
+        }
+    }
+
+    return result
+}
